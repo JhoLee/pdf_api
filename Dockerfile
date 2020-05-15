@@ -23,6 +23,7 @@ ENV ENV_PREFIX $PWD/env
 RUN conda env create --prefix $ENV_PREFIX -f environments.yml --force && \
     conda clean --all --yes
 RUN conda init bash \
+    && source /home/$USER/.bashrc \
     && conda activate $ENV_PREFIX
 
 WORKDIR /app
