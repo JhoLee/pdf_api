@@ -14,7 +14,7 @@ from flask import Flask, jsonify, make_response, send_file
 
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 # MODEL_PATH = os.path.join('models', 'celeba_mask_hq-psp-mobilenet_v2.pth')
-MODEL_PATH = os.path.join('models', 'celeba_mask_hq-psp-densenet121.pth')
+MODEL_PATH = os.path.join('/', 'models', 'celeba_mask_hq-psp-densenet121.pth')
 
 model = torch.load(MODEL_PATH, map_location=torch.device(DEVICE))
 

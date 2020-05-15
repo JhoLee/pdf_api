@@ -14,18 +14,19 @@ RUN wget \
     && rm -f Miniconda3-latest-Linux-x86_64.sh
 RUN conda update -y conda \
     && conda init bash
-
-
-COPY ./* /app/
+# conda environments
+COPY environments.gpu.yml /app/environments.yml
 COPY models /app/models
-COPY environments.yml environments.yml
 ENV ENV_PREFIX $PWD/env
-RUN conda env create --prefix $ENV_PREFIX -f environments.yml --force && \
+RUN conda env create --prefix $ENV_PREFIX -f /app/environments.yml --force && \
     conda clean --all --yes
 RUN conda init bash \
     && source /home/$USER/.bashrc \
     && conda activate $ENV_PREFIX
 
-WORKDIR /app
+# source
+COPY pdf_api /app/pdf_api
+
+WORKDIR /app/pdf_api
 
 CMD ["python", "main.py"]
