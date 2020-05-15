@@ -1,6 +1,8 @@
 # Dockerfile
 
 FROM ubuntu:18.04
+MAINTAINER Jho Lee "jho.lee@kakao.com"
+
 
 ENV CONDA="/root/miniconda3"
 ENV PATH="${CONDA}/bin:${PATH}"
@@ -11,6 +13,11 @@ SHELL ["/bin/bash", "-c"]
 RUN apt-get update && \
     apt-get install -y wget && \
        rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+
+# copy sources
+COPY ./pdf_api /app/pdf_api
+COPY ./models /app/models
 
 # install conda
 RUN wget \
@@ -25,17 +32,16 @@ RUN source ~/.bashrc \
     && source ~/.bashrc
 
 # conda environments
-WORKDIR /app
-ADD ./gpu.environments.yml /app/
-ENV ENV_PREFIX /app/env
-RUN conda env create --prefix $ENV_PREFIX -f /app/gpu.environments.yml --force \
-    && conda clean --all --yes \
-    && source activate $ENV_PREFIX
-
-# copy sources
-COPY ./pdf_api /app/pdf_api
-COPY ./models /app/models
+RUN conda install -c \
+        pytorch \
+        torchvision \
+        cudatoolkit \
+ && conda install \
+        opencv \
+        tqdm \
+        Pillow
 
 WORKDIR /app/pdf_api
 
-CMD ["python", "main.py"]
+RUN python main.py
+
