@@ -22,9 +22,6 @@ COPY gpu.environments.yml /app/environments.yml
 ENV ENV_PREFIX /app/env
 RUN conda env create --prefix $ENV_PREFIX -f /app/environments.yml --force && \
     conda clean --all --yes
-RUN conda init bash \
-    && source /home/$USER/.bashrc \
-    && conda activate $ENV_PREFIX
 
 # copy sources
 COPY pdf_api /app/pdf_api
