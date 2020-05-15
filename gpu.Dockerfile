@@ -1,7 +1,13 @@
 # Dockerfile
 
 FROM ubuntu:18.04
-ENV PATH="/root/miniconda3/bin:${PATH}"
+
+ENV CONDA="/root/miniconda3"
+ENV PATH="${CONDA}/bin:${PATH}"
+ARG PATH="${CONDA}/bin:${PATH}"
+
+SHELL ["/bin/bash", "-c"]
+
 RUN apt-get update && \
     apt-get install -y wget && \
        rm -rf /var/lib/apt/lists/*
@@ -12,21 +18,24 @@ RUN wget \
     && mkdir /root/.conda \
     && bash Miniconda3-latest-Linux-x86_64.sh -p /root/miniconda3 -b \
     && rm -f Miniconda3-latest-Linux-x86_64.sh
-RUN /bin/bash -c "source ~/.bashrc" \
+
+RUN source ~/.bashrc \
     && conda update -y conda \
     && conda init bash \
-    && /bin/bash -c "source ~/.bashrc"
+    && source ~/.bashrc
 
 # conda environments
 WORKDIR /app
 ADD ./gpu.environments.yml /app/
 ENV ENV_PREFIX /app/env
-RUN conda env create --prefix $ENV_PREFIX -f /app/environments.yml --force && \
-    conda clean --all --yes
+RUN conda env create --prefix $ENV_PREFIX -f /app/gpu.environments.yml --force \
+    && conda clean --all --yes \
+    && conda init bash \
+    && source activate $ENV_PREFIX
 
 # copy sources
-ADD ./pdf_api /app/
-ADD ./models /app/
+COPY ./pdf_api /app/pdf_api
+COPY ./models /app/pdf_api
 
 WORKDIR /app/pdf_api
 
