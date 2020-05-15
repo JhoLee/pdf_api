@@ -18,14 +18,15 @@ RUN /bin/bash -c "source ~/.bashrc" \
     && /bin/bash -c "source ~/.bashrc"
 
 # conda environments
-COPY gpu.environments.yml /app/environments.yml
+WORKDIR /app
+ADD ./gpu.environments.yml /app/
 ENV ENV_PREFIX /app/env
 RUN conda env create --prefix $ENV_PREFIX -f /app/environments.yml --force && \
     conda clean --all --yes
 
 # copy sources
-COPY pdf_api /app/pdf_api
-COPY models /app/models
+ADD ./pdf_api /app/
+ADD ./models /app/
 
 WORKDIR /app/pdf_api
 
