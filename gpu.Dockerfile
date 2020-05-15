@@ -30,12 +30,11 @@ ADD ./gpu.environments.yml /app/
 ENV ENV_PREFIX /app/env
 RUN conda env create --prefix $ENV_PREFIX -f /app/gpu.environments.yml --force \
     && conda clean --all --yes \
-    && conda init bash \
     && source activate $ENV_PREFIX
 
 # copy sources
 COPY ./pdf_api /app/pdf_api
-COPY ./models /app/pdf_api
+COPY ./models /app/models
 
 WORKDIR /app/pdf_api
 
