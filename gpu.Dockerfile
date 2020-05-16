@@ -32,14 +32,18 @@ RUN source ~/.bashrc \
     && source ~/.bashrc
 
 # conda environments
-RUN conda install -c \
+RUN conda install -c pytorch \
+        cudatoolkit \
+        cudnn \
         pytorch \
         torchvision \
-        cudatoolkit \
  && conda install \
         opencv \
+        Pillow \
         tqdm \
-        Pillow
+ && conda clean -afy \
+ && pip install --no-cache-dir \
+        segmentation-models-pytorch==0.1.0
 
 WORKDIR /app/pdf_api
 
