@@ -41,6 +41,7 @@ RUN conda install -c pytorch \
         opencv \
         Pillow \
         tqdm \
+        Flask \
  && conda clean -afy \
  && pip install --no-cache-dir \
         segmentation-models-pytorch==0.1.0
