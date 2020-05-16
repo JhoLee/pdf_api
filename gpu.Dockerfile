@@ -33,10 +33,10 @@ RUN source ~/.bashrc \
 
 # conda environments
 RUN conda install -c pytorch \
-        cudatoolkit \
-        cudnn \
         pytorch \
         torchvision \
+        cudatoolkit \
+        cudnn \
  && conda install \
         opencv \
         Pillow \
