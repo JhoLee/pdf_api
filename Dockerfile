@@ -3,6 +3,7 @@
 FROM ubuntu:18.04
 MAINTAINER Jho Lee "jho.lee@kakao.com"
 
+RUN ls -lad /tmp
 
 ENV CONDA="/root/miniconda3"
 ENV PATH="${CONDA}/bin:${PATH}"
