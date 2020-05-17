@@ -17,7 +17,7 @@ WORKDIR /app
 
 # copy sources
 COPY ./pdf_api /app/pdf_api
-COPY ./models /app/models
+COPY ../models /app/models
 
 # install conda
 RUN wget \

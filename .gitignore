@@ -1,5 +1,6 @@
 pdf_front/pdf_front/secrets.json
 
+secret_key.txt
 .idea/*
 config/secrets.json
 venv2

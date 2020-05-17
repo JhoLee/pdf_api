@@ -3,7 +3,6 @@
 FROM ubuntu:18.04
 MAINTAINER Jho Lee "jho.lee@kakao.com"
 
-RUN ls -lad /tmp
 
 ENV CONDA="/root/miniconda3"
 ENV PATH="${CONDA}/bin:${PATH}"
@@ -36,16 +35,20 @@ RUN source ~/.bashrc \
 RUN conda install -c pytorch \
         pytorch \
         torchvision \
+        cudatoolkit \
+        cudnn \
  && conda install \
         opencv \
         Pillow \
         tqdm \
-        Flask \
+        django \
+        Celery \
  && conda clean -afy \
  && pip install --no-cache-dir \
         segmentation-models-pytorch==0.1.0
 
 WORKDIR /app/pdf_api
 
+RUN python gen_secret_key.py
 RUN python main.py
 
