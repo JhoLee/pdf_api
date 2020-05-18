@@ -45,7 +45,10 @@ RUN conda install -c pytorch \
         Celery \
  && conda clean -afy \
  && pip install --no-cache-dir \
-        segmentation-models-pytorch==0.1.0
+        segmentation-models-pytorch==0.1.0 \
+        djangorestframework==3.11.0 \
+        markdown==3.2.2 \
+        django-filter=2.2.0
 
 WORKDIR /app/pdf_api
 
