@@ -63,6 +63,6 @@ RUN python gen_secret_key.py && \
     python init_torch.py
 
 
-RUN python manage.py makegmirations && \
+RUN python manage.py makemigrations && \
     python manage.py migrate && \
     python manage.py runserver
