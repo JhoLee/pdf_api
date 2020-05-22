@@ -14,8 +14,8 @@ DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 MODEL_PATH = os.path.join(BASE_DIR, '..', 'models', 'deeplabv3_resnet101.pth')
 
 
-class DeepLabV3(object):
-    def __init__(self):
+class SegModel(object):
+    def __init__(self, model=None):
         self.img_path = None
         self.model = None
         self.image = None
@@ -23,11 +23,12 @@ class DeepLabV3(object):
         self.batch = None
         self.predictions = None
         self.r = None
-        self.test_out = os.path.join(BASE_DIR, 'media', 'test')
+        assert type(model) == str
+        self.model = self.load_model(model)
 
-    def load_model(self):
-        self.model = torch.hub.load('pytorch/vision:v0.6.0', 'deeplabv3_resnet101', pretrained=True)
-        # self.model = torch.load(MODEL_PATH, map_location=torch.device(DEVICE))
+    def load_model(self, model):
+        model = 'deeplabv3_resnet101' if model is None else model
+        self.model = torch.hub.load('pytorch/vision:v0.6.0', model, pretrained=True)
         self.model.eval()
 
     def preprocess_image(self, img_path):
@@ -54,7 +55,6 @@ class DeepLabV3(object):
         self.predictions = output.argmax(0)
         self.mask = self.predictions.cpu().numpy()
         self.mask = np.where(self.mask == 15, 1, 0)
-        cv2.imwrite(os.path.join(self.test_out, 'mask.png'), self.mask)
 
         return self.mask
 
@@ -68,7 +68,6 @@ class DeepLabV3(object):
 
         self.r = Image.fromarray(self.predictions.byte().cpu().numpy()).resize(self.image.size)
         self.r.putpalette(colors)
-        # self.r.save(os.path.join(self.test_out, 'res.png'), np.asarray(self.r))
 
         return self.r
 

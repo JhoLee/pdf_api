@@ -11,14 +11,14 @@ from pdf_api.celery import app
 from pdf_api.settings import BASE_DIR
 from torch.autograd import Variable
 
-from .seg_models.deeplabv3 import DeepLabV3
+from .seg_models.segmodel import SegModel
 from .utils import gaussian_blur
 from .models import MaskRequest, MaskResult
 
 
 @app.task(bind=True)
 def run_mask(self, mask_request_id):
-    # try:
+    try:
         # update the task id on the mask_request for future monitoring
         mask_request = MaskRequest.objects.get(id=mask_request_id)
         mask_request.task_id = self.request.id
@@ -27,7 +27,7 @@ def run_mask(self, mask_request_id):
 
         # loading model architecture
         self.update_state(state='Loading the model', meta={'progress': 0})
-        model = DeepLabV3()
+        model = SegModel()
         model.load_model()
 
         # # model = torch.load(MODEL_PATH, map_location=torch.device(DEVICE))
@@ -83,12 +83,13 @@ def run_mask(self, mask_request_id):
         mask_request.maskresult.status = MaskResult.Status.FINISH
         mask_request.save()
 
-    # except Exception as e:
+    except Exception as e:
         mask_request.maskresult.status = MaskResult.Status.ERROR
         mask_request.save()
         print()
-        # print(str(e))
+        print(str(e))
 
-    # finally:
+    finally:
         # finish
+        del model
         self.update_state(state='Finished', meta={'progress': 100})
