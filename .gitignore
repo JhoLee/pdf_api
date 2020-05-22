@@ -5,7 +5,7 @@ secret_key.txt
 config/secrets.json
 venv2
 models
-
+**/migrations
 # Created by https://www.gitignore.io/api/git,vim,node,venv,linux,macos,pycharm,windows,webstorm
 # Edit at https://www.gitignore.io/?templates=git,vim,node,venv,linux,macos,pycharm,windows,webstorm
 
