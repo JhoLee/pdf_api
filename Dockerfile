@@ -59,7 +59,9 @@ RUN conda install -c pytorch \
 
 WORKDIR /app/pdf_api
 
-RUN python gen_secret_key.py
+RUN python gen_secret_key.py && \
+    python init_torch.py
+
 
 RUN python manage.py makegmirations && \
     python manage.py migrate && \

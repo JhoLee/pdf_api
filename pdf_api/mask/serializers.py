@@ -10,18 +10,20 @@ class MaskRequestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MaskRequest
-        fields = ("id", "author", "image", "method", "reg_date", "result_image", "status")
+        fields = ("id", "author", "image", "seg_method", "masking_method", "reg_date", "result_image", "status")
         # lookup_field = 'result'
 
     def create(self, validated_data):
         author = validated_data.get('author')
         image = validated_data.get('image')
-        method = validated_data.get('method')
+        seg_method = validated_data.get('seg_method')
+        masking_method = validated_data.get('masking_method')
         reg_date = validated_data.get('reg_date')
         mask_request = MaskRequest.objects.create(
             author=author,
             image=image,
-            method=method,
+            seg_method=seg_method,
+            masking_method=masking_method,
             reg_date=reg_date
         )
         # run_mask.delay(mask_request.id)

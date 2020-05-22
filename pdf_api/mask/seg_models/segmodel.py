@@ -11,11 +11,10 @@ from torchvision import transforms
 from ..utils import gaussian_blur
 
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
-MODEL_PATH = os.path.join(BASE_DIR, '..', 'models', 'deeplabv3_resnet101.pth')
 
 
 class SegModel(object):
-    def __init__(self, model=None):
+    def __init__(self):
         self.img_path = None
         self.model = None
         self.image = None
@@ -23,10 +22,8 @@ class SegModel(object):
         self.batch = None
         self.predictions = None
         self.r = None
-        assert type(model) == str
-        self.model = self.load_model(model)
 
-    def load_model(self, model):
+    def load_model(self, model=None):
         model = 'deeplabv3_resnet101' if model is None else model
         self.model = torch.hub.load('pytorch/vision:v0.6.0', model, pretrained=True)
         self.model.eval()

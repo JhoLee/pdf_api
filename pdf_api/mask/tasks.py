@@ -28,7 +28,8 @@ def run_mask(self, mask_request_id):
         # loading model architecture
         self.update_state(state='Loading the model', meta={'progress': 0})
         model = SegModel()
-        model.load_model()
+        model_name = mask_request.get_seg_method_display().lower()
+        model.load_model(model_name)
 
         # # model = torch.load(MODEL_PATH, map_location=torch.device(DEVICE))
         # model = torch.hub.load('pytorch/vision:v0.6.0', 'deeplabv3_resnet101', pretrained=True)
@@ -91,5 +92,4 @@ def run_mask(self, mask_request_id):
 
     finally:
         # finish
-        del model
         self.update_state(state='Finished', meta={'progress': 100})
