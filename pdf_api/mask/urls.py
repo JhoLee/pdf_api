@@ -6,8 +6,8 @@ from . import views
 app_name = 'mask'
 
 router = routers.DefaultRouter()
-router.register('requests', views.MaskRequestViewSet)
-router.register('results', views.MaskResultViewSet)
+router.register('request', views.MaskRequestViewSet)
+router.register('result', views.MaskResultViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

@@ -26,6 +26,10 @@ RUN wget \
     && bash Miniconda3-latest-Linux-x86_64.sh -p /root/miniconda3 -b \
     && rm -f Miniconda3-latest-Linux-x86_64.sh
 
+#RUN curl -O -J -L \
+#    https://bit.ly/pytorch_mrcnn_coco_pth \
+# && mv mask_rcnn_coco.pth models
+
 RUN source ~/.bashrc \
     && conda update -y conda \
     && conda init bash \
@@ -43,15 +47,20 @@ RUN conda install -c pytorch \
         tqdm \
         django \
         Celery \
+        Cython \
+        matplotlib \
  && conda clean -afy \
  && pip install --no-cache-dir \
         segmentation-models-pytorch==0.1.0 \
         djangorestframework==3.11.0 \
         markdown==3.2.2 \
-        django-filter=2.2.0
+        django-filter==2.2.0
+
 
 WORKDIR /app/pdf_api
 
 RUN python gen_secret_key.py
-RUN python main.py
 
+RUN python manage.py makegmirations && \
+    python manage.py migrate && \
+    python manage.py runserver

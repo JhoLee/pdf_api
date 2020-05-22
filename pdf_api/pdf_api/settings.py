@@ -41,7 +41,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
 
-    'mask.apps.MaskConfig',
+    'mask',
 ]
 
 MIDDLEWARE = [
@@ -110,6 +110,7 @@ REST_FRAMEWORK = {
     # 'DEFAULT_PERMISSION_CLASSES': [
     #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
     # ]
+    # 'PAGE_SIZE': 10,
 }
 
 # Internationalization
@@ -140,3 +141,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 if not os.path.exists(MEDIA_ROOT):
     os.makedirs(MEDIA_ROOT)
 
+## for celery
+# CELERY_BROKER_URL = 'amqp://localhost'
+# CELERY_RESULT_BACKEND = 'djcelery.backedns.database:DatabaseBackend'
+# # celery_cache_backend = 'django-cache'
+# celery_cache_backend = 'default'
+# caches = {
+#     'default': {
+#         'backend': 'django.core.cache.backends.db.databasecache',
+#         'location': 'my_cache_table',
+#     }
+# }
