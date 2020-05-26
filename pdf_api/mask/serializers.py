@@ -26,7 +26,6 @@ class MaskRequestSerializer(serializers.ModelSerializer):
             masking_method=masking_method,
             reg_date=reg_date
         )
-        # run_mask.delay(mask_request.id)
         run_mask.delay(mask_request.id)
         return mask_request
 

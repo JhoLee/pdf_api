@@ -24,6 +24,7 @@ class MaskRequest(models.Model):
 
     class MaskMethod(models.TextChoices):
         BLURRING = 'BL', _('Blurring')
+        MOSAIC = 'MS', _('Mosaic')
 
     author = models.EmailField(max_length=40)
     image = models.ImageField(default=None, upload_to=original_image_path)
