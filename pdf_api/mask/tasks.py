@@ -38,7 +38,8 @@ def run_mask(self, mask_request_id):
         ## pre-processing the image
         self.update_state(state='Pre-processing the image', meta={'progress': 30})
         img_path = os.path.join(BASE_DIR, 'media', str(mask_request.image))
-        model.preprocess_image(img_path)
+        model.load_image(img_path)
+        model.preprocess_image()
 
         # original_img = cv2.imread(img_path)
         # img = original_img

@@ -5,7 +5,6 @@ import torch
 import numpy as np
 from PIL import Image
 
-from pdf_api.settings import BASE_DIR
 from torchvision import transforms
 
 from ..utils import gaussian_blur
@@ -28,11 +27,17 @@ class SegModel(object):
         self.model = torch.hub.load('pytorch/vision:v0.6.0', model, pretrained=True)
         self.model.eval()
 
-    def preprocess_image(self, img_path):
+    def load_image(self, img_path):
         self.img_path = img_path
         image = cv2.imread(img_path)
         image = image[:, :, :3]
         self.image = Image.fromarray(image)
+
+
+    def preprocess_image(self, image=None):
+        if image is not None:
+            self.image = image
+
         self.preprocess = transforms.Compose([
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.485, 0.456, 0.406],
