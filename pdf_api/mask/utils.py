@@ -9,7 +9,7 @@ import numpy as np
 """
 
 
-def gaussian_blur(img, mask):
+def gaussian_blur(img, mask, rate=127):
     """
     이미지에서 마스크 부분에 대해 흐림 효과 처리
     :param img: image
@@ -18,8 +18,7 @@ def gaussian_blur(img, mask):
     :type mask: np.ndarray
     :return: masked image with blurring
     """
-    mask = np.stack((mask,) * 3, axis=-1)
-    blur_img = cv2.GaussianBlur(img, (127, 127), 0)
+    blur_img = cv2.GaussianBlur(img, (rate, rate), 0)
     out_img = np.where(mask, blur_img, img).astype(np.uint8)
     return out_img
 
@@ -35,7 +34,6 @@ def mosaic(img, mask, rate=25):
     :type rate: int
     :return: masked image with mosaic
     """
-    mask = np.stack((mask,) * 3, axis=-1)
     h, w, _ = img.shape
     mosaic_img = cv2.resize(img, (w // rate, h // rate))
     mosaic_img = cv2.resize(mosaic_img, (w, h), interpolation=cv2.INTER_AREA)

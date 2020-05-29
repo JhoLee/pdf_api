@@ -33,7 +33,6 @@ class SegModel(object):
         image = image[:, :, :3]
         self.image = Image.fromarray(image)
 
-
     def preprocess_image(self, image=None):
         if image is not None:
             self.image = image
@@ -57,6 +56,7 @@ class SegModel(object):
         self.predictions = output.argmax(0)
         self.mask = self.predictions.cpu().numpy()
         self.mask = np.where(self.mask == 15, 1, 0)
+        self.mask = np.stack((self.mask,) * 3, axis=-1)
 
         return self.mask
 
