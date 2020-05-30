@@ -11,11 +11,16 @@ ARG PATH="${CONDA}/bin:${PATH}"
 SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update && \
-    apt-get install -y wget && \
-       rm -rf /var/lib/apt/lists/*
+    apt-get install -y \
+        wget \
+#        netcat \
+        && \
+    rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 
 # copy sources
+COPY scripts/wait-for /bin/wait-for
+RUN chmod +x /bin/wait-for
 COPY ./pdf_api /app/pdf_api
 COPY ./models /app/models
 
@@ -49,9 +54,10 @@ RUN conda install -c pytorch \
         Celery \
         Cython \
         matplotlib \
+        postgresql \
+        psycopg2 \
  && conda clean -afy \
  && pip install --no-cache-dir \
-        segmentation-models-pytorch==0.1.0 \
         djangorestframework==3.11.0 \
         markdown==3.2.2 \
         django-filter==2.2.0 \
@@ -63,7 +69,7 @@ WORKDIR /app/pdf_api
 RUN python gen_secret_key.py && \
     python init_torch.py
 
-
-RUN python manage.py makemigrations && \
-    python manage.py migrate
+CMD ["python", "manage.py", "collectstatic"]
+CMD ["python", "manage.py", "makemigrations"]
+CMD ["python", "manage.py", "migrate"]
 CMD ["python", "manage.py", "runserver", "0:8000"]

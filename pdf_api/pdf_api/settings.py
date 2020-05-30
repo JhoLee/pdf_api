@@ -80,24 +80,24 @@ WSGI_APPLICATION = 'pdf_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'BACKEND': 'django.db.backends.mysql',
-        'NAME': 'pdf_api',
-        'USER': 'user',
-        'PASSWORD': 'password',
-        'HOST': 'pdf_api-db',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'postgres',
         'PORT': '3306',
     }
 }
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://pdf_api-cache:6379/1',
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        }
-    }
-}
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django_redis.cache.RedisCache',
+#         'LOCATION': 'redis://cache:6379/1',
+#         'OPTIONS': {
+#             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+#         }
+#     }
+# }
 
 
 # Password validation
@@ -157,7 +157,9 @@ if not os.path.exists(MEDIA_ROOT):
     os.makedirs(MEDIA_ROOT)
 
 ## for celery
-# CELERY_BROKER_URL = 'amqp://localhost'
+# CELERY_BROKER_URL = 'redis://:password@cache:6379/0'
+CELERY_BROKER_URL = 'amqp://localhost'
+
 # CELERY_RESULT_BACKEND = 'djcelery.backedns.database:DatabaseBackend'
 # # celery_cache_backend = 'django-cache'
 # celery_cache_backend = 'default'
