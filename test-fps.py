@@ -6,7 +6,7 @@ import argparse
 import cv2
 import numpy as np
 
-from pdf_api.mask.seg_models.segmodel import SegModel
+from pdf_api.mask.seg_models.torchmodel import TorchModel
 
 parser = argparse.ArgumentParser(description='..')
 
@@ -32,7 +32,7 @@ mosaic_out = cv2.VideoWriter('test/{}-mosaic.mp4'.format(model_name), fourcc, 30
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 
-net = SegModel()
+net = TorchModel()
 net.load_model(model_name)
 print('model', model_name, 'loaded.')
 

@@ -18,35 +18,10 @@ def result_image_path(instance, filename):
 
 
 class MaskRequest(models.Model):
-    class SegMethod(models.TextChoices):
-        DEEPLABV3_RESNET101 = 'DLR', _('DeepLabV3_Resnet101')
-        FCN_RESNET101 = 'FCNR', _('FCN_ResNet101')
-
-    class MaskMethod(models.TextChoices):
-        BLURRING = 'BL', _('Blurring')
-        MOSAIC = 'MS', _('Mosaic')
 
     author = models.EmailField(max_length=40)
     image = models.ImageField(default=None, upload_to=original_image_path)
-    masking_method = models.CharField(
-        max_length=3,
-        choices=MaskMethod.choices,
-        default=MaskMethod.BLURRING
-    )
-    seg_method = models.CharField(
-        max_length=5,
-        choices=SegMethod.choices,
-        default=SegMethod.DEEPLABV3_RESNET101
-    )
     reg_date = models.DateTimeField(auto_now_add=True)
-
-    # def save(self, *args, **kwargs):
-    #     if self.pk is None:
-    #         saved_image = self.image
-    #         self.image = None
-    #         super(MaskRequest, self).save(*args, **kwargs)
-    #         self.image = saved_image
-    #     return super(MaskRequest, self).save(*args, **kwargs)
 
     def __str__(self):
         return "Mask Request #{} - {}".format(self.id, self.author)
@@ -73,14 +48,6 @@ class MaskResult(models.Model):
     result_image = models.ImageField(blank=True, upload_to=result_image_path)
     mod_date = models.DateTimeField(auto_now=True)
 
-    # def save(self, *args, **kwargs):
-    #     if self.pk is None:
-    #         saved_image = self.result_image
-    #         self.result_image = None
-    #         super(MaskResult, self).save(*args, **kwargs)
-    #         self.result_image = saved_image
-    #     return super(MaskResult, self).save(*args, **kwargs)
-
     def __str__(self):
         return "Mask Result of Request #{}".format(self.request.id)
 
@@ -95,4 +62,3 @@ def create_mask_result(sender, instance, created, **kwargs):
 def save_mask_result(sender, instance, **kwargs):
     instance.maskresult.save()
 
-# TODO: Solve error
